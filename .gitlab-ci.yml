@@ -82,7 +82,7 @@ run-from-scheduler:
     - echo "=== Running application from schedule ===="
     - echo $CI_JOB_TOKEN | docker login -u gitlab-ci-token --password-stdin $CI_REGISTRY
   script:
-    - CHROME_TAG=$(docker run -d --name chrome-headless --dns 172.16.1.1 knqz/chrome-headless --disable-blink-features=BlockCredentialedSubresources)
+    - CHROME_TAG=$(docker run -d --dns 172.16.1.1 knqz/chrome-headless --disable-blink-features=BlockCredentialedSubresources)
     - |
       docker run --rm \
       	-e WEBHOOK_MAIN_URL=$WEBHOOK_MAIN_URL \
