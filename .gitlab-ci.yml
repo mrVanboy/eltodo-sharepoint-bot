@@ -93,7 +93,7 @@ run-from-scheduler:
         -e GOOGLE_STORAGE_BUCKET=$GOOGLE_STORAGE_BUCKET \
         -e GOOGLE_BUCKET_OBJECT=$GOOGLE_BUCKET_OBJECT \
         -e CHROME_URL=http://knqz__chrome-headless:9222/json \
-        --link="$CHROME_TAG:knqz__chrome-headless"
+        --link="$CHROME_TAG:knqz__chrome-headless" \
         $CI_REGISTRY_IMAGE:latest || EXIT_CODE=$? && true
     - docker rm -f $CHROME_TAG
     - return $EXIT_CODE
