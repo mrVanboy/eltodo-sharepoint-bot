@@ -15,7 +15,7 @@ before_script:
   - chmod +x /usr/bin/dep
   # Set up GOPATH
   - GOPATH=$CI_PROJECT_DIR
-  - cd src/eltodo-lunch-bot
+  - cd src/sharepoint-bot
   - dep ensure
 
 test 1:2:
