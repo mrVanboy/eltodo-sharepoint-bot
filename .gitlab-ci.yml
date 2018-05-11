@@ -84,7 +84,7 @@ run-from-scheduler:
   script:
     - docker pull knqz/chrome-headless
     - CHROME_TAG=$(docker run -d --dns 172.16.1.1 knqz/chrome-headless --disable-blink-features=BlockCredentialedSubresources)
-    - sleep 20
+    - sleep 30
     - |
       docker run --rm \
       	-e WEBHOOK_MAIN_URL=$WEBHOOK_MAIN_URL \
@@ -99,5 +99,6 @@ run-from-scheduler:
         $CI_REGISTRY_IMAGE:latest || EXIT_CODE=$? && true
     - docker rm -f $CHROME_TAG
     - return $EXIT_CODE
+  retry: 2
   only:
     - schedules
