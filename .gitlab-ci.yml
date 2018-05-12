@@ -85,10 +85,10 @@ run-from-scheduler:
     - docker pull knqz/chrome-headless
     - CHROME_TAG=$(docker run -d --dns 172.16.1.1 knqz/chrome-headless --disable-blink-features=BlockCredentialedSubresources)
     - mkdir -p ${CI_PROJECT_DIR}/artifacts
-    - touch ${CI_PROJECT_DIR}/artifacts/output.png
     - sleep 30
+    - SHAREPOINT_CONTAINER=sharepoint_bot-${CI_JOB_ID}
     - |
-      docker run --rm \
+      docker run \
       	-e WEBHOOK_MAIN_URL=$WEBHOOK_MAIN_URL \
       	-e WEBHOOK_DEBUG_URL=$WEBHOOK_DEBUG_URL \
       	-e GOOGLE_APPLICATION_CREDENTIALS_JSON="${GOOGLE_APPLICATION_CREDENTIALS_JSON}" \
@@ -98,9 +98,11 @@ run-from-scheduler:
         -e GOOGLE_BUCKET_OBJECT=$GOOGLE_BUCKET_OBJECT \
         -e CHROME_URL=http://knqz__chrome-headless:9222/json \
         --link="$CHROME_TAG:knqz__chrome-headless" \
-        -v ${CI_PROJECT_DIR}/artifacts:/app/artifacts \
+        --name $SHAREPOINT_CONTAINER \
         $CI_REGISTRY_IMAGE:latest || EXIT_CODE=$? && true
     - docker rm -f $CHROME_TAG
+    - docker cp ${SHAREPOINT_CONTAINER}:/app/artifacts/output.png ${CI_PROJECT_DIR}/artifacts/output.png || true
+    - docker rm -f $SHAREPOINT_CONTAINER
     - return $EXIT_CODE
   retry: 2
   artifacts:
