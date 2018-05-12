@@ -85,6 +85,7 @@ run-from-scheduler:
     - docker pull knqz/chrome-headless
     - CHROME_TAG=$(docker run -d --dns 172.16.1.1 knqz/chrome-headless --disable-blink-features=BlockCredentialedSubresources)
     - mkdir -p ${CI_PROJECT_DIR}/artifacts
+    - touch ${CI_PROJECT_DIR}/artifacts/output.png
     - sleep 30
     - |
       docker run --rm \
@@ -104,7 +105,7 @@ run-from-scheduler:
   retry: 2
   artifacts:
     paths:
-      - artifacts
-    expire_in: 1 week
+      - artifacts/
+    expire_in: 1 day
   only:
     - schedules
