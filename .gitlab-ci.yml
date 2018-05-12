@@ -84,6 +84,7 @@ run-from-scheduler:
   script:
     - docker pull knqz/chrome-headless
     - CHROME_TAG=$(docker run -d --dns 172.16.1.1 knqz/chrome-headless --disable-blink-features=BlockCredentialedSubresources)
+    - mkdir -p ${CI_PROJECT_DIR}/artifacts
     - sleep 30
     - |
       docker run --rm \
@@ -96,9 +97,14 @@ run-from-scheduler:
         -e GOOGLE_BUCKET_OBJECT=$GOOGLE_BUCKET_OBJECT \
         -e CHROME_URL=http://knqz__chrome-headless:9222/json \
         --link="$CHROME_TAG:knqz__chrome-headless" \
+        -v ${CI_PROJECT_DIR}/artifacts:/app/artifacts \
         $CI_REGISTRY_IMAGE:latest || EXIT_CODE=$? && true
     - docker rm -f $CHROME_TAG
     - return $EXIT_CODE
   retry: 2
+  artifacts:
+    paths:
+      - artifacts
+    expire_in: 1 week
   only:
     - schedules
