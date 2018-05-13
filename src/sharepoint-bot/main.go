@@ -76,4 +76,5 @@ func main() {
 		webhook.NotifyAboutErrors([]error{err})
 		panic(err)
 	}
+
 }

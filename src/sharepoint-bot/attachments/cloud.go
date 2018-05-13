@@ -93,5 +93,9 @@ func SaveToStorage(announcements Announcements) error {
 		return err
 	}
 
+	if err := w.Close(); err != nil {
+		return err
+	}
+
 	return nil
 }
