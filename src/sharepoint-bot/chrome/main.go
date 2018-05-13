@@ -56,6 +56,8 @@ func saveScreenshot(screenshotBuf []byte) {
 func getAnnouncements(site string, res *string, screenshotBuf *[]byte) chromedp.Tasks {
 	return chromedp.Tasks{
 		chromedp.Navigate(site),
+		chromedp.Sleep(10 * time.Second),
+		chromedp.WaitReady(`.announcements-list`),
 		chromedp.WaitVisible(`.announcements-list`),
 		chromedp.OuterHTML(`.announcements-list`, res, chromedp.NodeReady),
 		setViewportAndScale(1920, 1080),

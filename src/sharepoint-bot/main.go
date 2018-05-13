@@ -29,6 +29,7 @@ func main() {
 		panic(err)
 	}
 
+	fmt.Fprintf(os.Stdout, "Loaded annoncements from web: %+v\n", ann)
 	oldAnn, err := attachments.LoadFromStorage()
 	if err != nil {
 		webhook.NotifyAboutErrors([]error{err})
@@ -36,6 +37,7 @@ func main() {
 	}
 
 	if oldAnn == nil {
+		fmt.Fprintf(os.Stdout,"No old announcements in storage was found\n")
 		err := attachments.SaveToStorage(ann)
 		if err != nil {
 			webhook.NotifyAboutErrors([]error{err})
@@ -43,8 +45,11 @@ func main() {
 		}
 		return
 	}
+	fmt.Fprintf(os.Stdout, "Old announcements from storage: %+v\n", ann)
 
 	newAnn := ann.GetNewEntries(oldAnn)
+	fmt.Fprintf(os.Stdout, "New announcements: %+v\n", newAnn)
+
 	if len(newAnn) == 0{
 		fmt.Fprintln(os.Stdout, "Announcements aren't new. Exitting...")
 		return

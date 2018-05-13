@@ -9,6 +9,8 @@ import (
 	"encoding/json"
 	"sharepoint-bot/cfg"
 	"errors"
+	"fmt"
+	"os"
 )
 
 func LoadFromStorage() (Announcements, error) {
@@ -96,6 +98,6 @@ func SaveToStorage(announcements Announcements) error {
 	if err := w.Close(); err != nil {
 		return err
 	}
-
+	fmt.Fprintf(os.Stdout,"Saving to storage: %+v\n", announcements)
 	return nil
 }
